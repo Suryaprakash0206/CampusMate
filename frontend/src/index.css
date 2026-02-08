@@ -1,0 +1,484 @@
+/* =====================================================
+   GLOBAL
+===================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #ffffff;
+  color: #222;
+}
+
+/* =====================================================
+   BUTTONS (HOME + LOGIN)
+===================================================== */
+button {
+  width: 100%;
+  padding: 14px;
+  font-size: 14px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.3);
+}
+
+
+
+/* =====================================================
+   LOGIN PAGES
+===================================================== */
+.login {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #dff5f0, #bfe8de);
+}
+
+.box {
+  background: #ffffff;
+  padding: 45px;
+  border-radius: 22px;
+  width: 340px;
+  text-align: center;
+  box-shadow: 0 25px 55px rgba(47, 159, 143, 0.25);
+}
+
+.box h2 {
+  margin-bottom: 28px;
+  color: #2f6f65;
+  font-weight: 700;
+}
+
+
+.box input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  border: 1px solid #cfe9e3;
+  font-size: 14px;
+  outline: none;
+}
+
+.box input:focus {
+  border-color: #38bfa3;
+  box-shadow: 0 0 0 2px rgba(56, 191, 163, 0.15);
+}
+
+.box button {
+  background: linear-gradient(135deg, #38bfa3, #2f9f8f);
+  color: #ffffff;
+  font-weight: 700;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.box button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(47, 159, 143, 0.35);
+}
+
+
+/* =====================================================
+   TOPBAR
+===================================================== */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: #3e7287;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  z-index: 1000;
+}
+
+.topbar-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.topbar-title {
+  line-height: 1;
+  font-size: 20px;
+}
+
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+.sidebar {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  width: 260px;
+  height: calc(100vh - 64px);
+  background: #2f5564;
+  color: #ffffff;
+  padding: 10px 0;
+}
+
+/* Profile row */
+.sidebar-profile {
+  width: 100%;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  opacity: 0.95;
+}
+
+.sidebar-profile:hover {
+  background: rgba(255, 255, 255, 0.08);
+  opacity: 1;
+}
+
+/* Sidebar menu items */
+.sidebar-item {
+  width: 100%;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 16px;
+  opacity: 0.95;
+}
+
+.sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  opacity: 1;
+}
+
+/* Active state */
+.sidebar-item.active {
+  background: #3f6f82;
+  border-left: 5px solid #5fd1c7;
+  padding-left: 19px;
+}
+
+/* Profile icon */
+.profile-icon {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+/* Sidebar icons */
+.sidebar-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+
+  /* 🔥 makes icons full white */
+  filter: brightness(0) invert(1);
+}
+
+
+/* Sidebar item layout */
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+
+/* =====================================================
+   DASHBOARD CONTENT
+===================================================== */
+.dashboard {
+  margin-left: 260px;
+  margin-top: 64px;
+  padding: 30px;
+  background: #f2f5f7;
+  min-height: calc(100vh - 64px);
+  overflow-y: auto;
+}
+
+/* =====================================================
+   DASHBOARD CARDS
+===================================================== */
+.cards {
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.card-box {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 20px;
+  width: 340px;
+  min-height: 170px;
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.15);
+}
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+.logout-section {
+  position: absolute;
+  bottom: 25px;
+  width: 100%;
+  padding-left: 24px;
+}
+
+.logout-btn {
+  width: 80px;
+  padding: 8px 0;
+  background: #ffffff;
+  color: #3b2600;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background: #e6e6e6;
+}
+
+
+.profile-page {
+  max-width: 600px;
+}
+
+.profile-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 15px;
+  width :300px;
+  margin-bottom: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.change-password-btn {
+  width: 160px;
+  padding: 10px 18px;
+  background: #2f5564;
+  color: #ffffff;
+  border-radius: 10px;
+  margin: 15px 0;
+  font-weight: 600;
+}
+
+.change-password-btn:hover {
+  background: #3f6f82;
+}
+
+/* Password box */
+.password-box {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+  max-width: 420px;
+  margin-top: 20px;
+}
+
+/* Inputs one after another */
+.password-box input {
+  width: 100%;              /* FULL WIDTH */
+  padding: 12px;
+  margin-bottom: 14px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+/* Center Update Password button */
+.password-box button {
+  width: 160px;
+  padding: 10px;
+  background: #2f5564;
+  color: #ffffff;
+  border-radius: 10px;
+  font-weight: 600;
+
+  display: block;          /* 🔑 */
+  margin: 10px auto 0;     /* 🔑 centers horizontally */
+}
+
+.password-box button:hover {
+  background: #3f6f82;
+}
+
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+@media (max-width: 768px) {
+  .home {
+    flex-direction: column;
+    padding: 30px;
+  }
+
+  .big-logo {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 30px;
+  }
+
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+  }
+
+  .dashboard {
+    margin-left: 0;
+    margin-top: 64px;
+  }
+}
+
+/* ================= HOME PAGE (NEW STRUCTURE) ================= */
+
+.home-wrapper {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef1f4;
+}
+
+.home-card {
+  width: 900px;
+  height: 480px;
+  display: flex;
+  background: #ffffff;
+  border-radius: 22px;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.25);
+  overflow: hidden;
+}
+
+/* LEFT PANEL */
+.home-left {
+  width: 45%;
+  background: linear-gradient(180deg, #347b6c, #34796a);
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+}
+
+.home-logo {
+  width: 140px;
+  margin-bottom: 20px;
+}
+
+.home-left h1 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.home-left p {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* RIGHT PANEL */
+.home-right {
+  width: 55%;
+  padding: 50px;
+}
+
+.home-right h2 {
+  font-size: 26px;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+/* ROLE CARDS */
+.role-card {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 18px;
+  border-radius: 14px;
+  cursor: pointer;
+  margin-bottom: 18px;
+  background: #eefaf7;   /* soft sea green */
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.role-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+  background: #d9f3ee;
+}
+
+
+.role-card img {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 12px;
+
+  /* 🌊 Sea-green background */
+  background: linear-gradient(135deg, #38bfa3, #1e4b45);
+
+  /* make icon white */
+  /*filter: brightness(0) invert(1);*/
+}
+
+
+.role-card h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.role-card p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #555;
+}
+
+/* Color accents */
+.student-role {
+  border-left: 5px solid #22a88b;
+}
+
+.student-role h3 {
+  color: #215f55;
+}
+
+
+.faculty-role {
+  border-left: 5px solid #2f9f8f;
+}
+
+.faculty-role h3 {
+  color: #215f55;
+}
