@@ -1,4 +1,3 @@
-// FacultyLogin.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -8,39 +7,56 @@ export default function FacultyLogin() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = () => {
-    if (!facultyId && !password) {
-      setError("Faculty ID and Password are required");
-    } else if (!facultyId) {
-      setError("Faculty ID is required");
-    } else if (!password) {
-      setError("Password is required");
-    } else {
-      setError("");
-      navigate("/dashboard/faculty");
+  const handleLogin = async () => {
+    setError(""); 
+
+    if (!facultyId || !password) {
+      setError("Please fill in all fields");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5000/api/faculty/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ facultyId, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("role", "faculty"); // Optional: track user type
+        navigate("/dashboard/faculty");
+      } else {
+        setError(data.message || "Login failed");
+      }
+    } catch (err) {
+      console.error("Fetch Error:", err);
+      setError("Cannot connect to server. Is the backend running?");
     }
   };
 
   return (
-    <div className="login">
-      <div className="box">
+    <div className="login" style={{ padding: "20px", textAlign: "center" }}>
+      <div className="box" style={{ border: "1px solid #ccc", display: "inline-block", padding: "20px" }}>
         <h2>Faculty Login</h2>
-
-        <input
-          placeholder="Faculty ID"
-          value={facultyId}
-          onChange={(e) => setFacultyId(e.target.value)}
-        />
-
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        {error && <p style={{ color: "red", marginBottom: "10px" }}>{error}</p>}
-
+        <div style={{ marginBottom: "10px" }}>
+          <input
+            placeholder="Faculty ID"
+            value={facultyId}
+            onChange={(e) => setFacultyId(e.target.value)}
+          />
+        </div>
+        <div style={{ marginBottom: "10px" }}>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        {error && <p style={{ color: "red", fontSize: "14px" }}>{error}</p>}
         <button onClick={handleLogin}>Login</button>
       </div>
     </div>
