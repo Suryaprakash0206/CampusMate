@@ -1,12 +1,16 @@
-### **Project Description**
+# React + Vite
 
-**Homepage**
-The homepage was created using React with a split layout. Flexbox was used to divide the screen into two sections. The left section displays the Campus Mate logo, while the right section contains a card with Student Login and Faculty Login buttons. React Router was used for navigation to move between pages without reloading. A gradient background and card-based design were applied using CSS for a modern and clean appearance.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-**Login Pages (Student & Faculty)**
-The login pages were built as separate React components with a shared design structure. Each page includes input fields for user ID and password along with a login button. Navigation to the dashboard is handled using React Router. CSS was used to center the login box, add rounded corners, shadows, and maintain consistent styling across both login pages.
+Currently, two official plugins are available:
 
-**Dashboard**
-The dashboard was developed using a modular component structure. A full-width top bar was created using a header component to display the Campus Mate logo and title. Below the top bar, a sidebar component was placed for navigation links such as Profile, Announcements, Exams, Hackathons, and Drive. The main content area displays dashboard cards like Schedule and Works. Flexbox and responsive CSS were used to manage layout alignment, spacing, and adaptability across different screen sizes.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
+## React Compiler
 
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
