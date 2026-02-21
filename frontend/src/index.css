@@ -254,7 +254,7 @@ button:hover {
   color: #3b2600;
   font-weight: 700;
   border: none;
-  border-radius: 10px;
+  border-radius: 5px;
   cursor: pointer;
 }
 
@@ -481,4 +481,615 @@ button:hover {
 
 .faculty-role h3 {
   color: #215f55;
+}
+/* =====================================================
+   ANNOUNCEMENTS PAGE
+===================================================== */
+
+/* ================= FACULTY ANNOUNCEMENTS ================= */
+/* Header */
+.announcements-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.add-announcement-btn {
+  background: #3f7a78;
+  border: 2px solid #3f7a78;
+  color: #ffffff;
+
+  padding: 6px 14px;      /* smaller padding */
+  font-size: 14px;        /* smaller text */
+  border-radius: 6px;     /* slightly rounded */
+  font-weight: 500;
+
+  width: auto;            /* important */
+  min-width: 150px;       /* optional */
+  height: 38px;           /* fixed height */
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.add-announcement-btn:hover {
+  background: #2f6f65;
+}
+
+
+/* Card */
+.faculty-announcement-card {
+  background: #ffffff;
+  padding: 22px 28px;
+  border-radius: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.announcement-content h3 {
+  margin-bottom: 8px;
+}
+
+.announcement-content p {
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.announcement-time {
+  font-size: 13px;
+  color: #777;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.announcement-actions {
+  display: flex;
+  gap: 16px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.edit-icon {
+  color: #3f7a78;
+}
+
+.edit-icon:hover {
+  color: #2f5e5c;
+}
+
+.delete-icon {
+  color: #888;
+}
+
+.delete-icon:hover {
+  color: #c94c4c;
+}
+
+/* Modal */
+.announcement-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.announcement-modal {
+  background: #ffffff;
+  width: 420px;
+  padding: 30px;
+  border-radius: 12px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.announcement-modal input,
+.announcement-modal textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 18px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.publish-btn {
+  width: 100%;
+  padding: 12px;
+  background: #3f7a78;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.publish-btn:hover {
+  background: #346d6b;
+}
+.faculty-announcements {
+  padding: 30px;
+  background: #f2f5f7;   /* Same as dashboard background */
+  min-height: calc(100vh - 64px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.faculty-announcement-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+.empty-announcements {
+  text-align: center;
+  margin-top: 120px;
+  color: #7b8a93;
+}
+
+.empty-announcements svg {
+  font-size: 50px;
+  margin-bottom: 15px;
+  opacity: 0.5;
+}
+
+.empty-announcements h3 {
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.empty-announcements p {
+  font-size: 14px;
+}
+/* ================= PROFILE PAGE ================= */
+
+/* Page spacing */
+.profile-page {
+  padding:0px;
+}
+
+.profile-heading {
+  margin-bottom: 20px;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+/* Card */
+.profile-card {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 15px;
+  width: 500px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  position: relative;
+}
+
+/* Top section */
+.profile-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 25px;
+}
+
+
+.profile-title h3 {
+  margin: 0;
+}
+
+.profile-title p {
+  margin: 0;
+  font-size: 14px;
+  color: #777;
+}
+
+.edit-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+
+  background: #e9ecef;
+  border: none;
+  padding: 10px 15px;
+  font-size: 12px;
+  border-radius: 5px;
+  cursor: pointer;
+
+  width: auto;        /* IMPORTANT */
+  display: inline-block;  /* IMPORTANT */
+}
+
+
+
+
+/* Fields */
+.profile-fields label {
+  display: block;
+  margin: 15px 0 5px;
+  font-weight: 500;
+}
+
+.profile-fields input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+/* Save/Cancel */
+.profile-actions {
+  margin-top: 25px;
+  display: flex;
+  gap: 15px;
+}
+
+.save-btn {
+  background: #3f7a78;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+.cancel-btn {
+  background: #6c9ea0;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+/* Change Password */
+.change-password-wrapper {
+  margin-top: 0px;
+}
+
+.change-password-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  background: #f4f6f8;
+  border: 1px solid #cfd6dc;
+  color: #1f2d3d;
+
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 500;
+
+  border-radius: 8px;
+  cursor: pointer;
+
+  width: auto !important; /* prevent full width */
+}
+
+.change-password-btn:hover {
+  background: #e9ecef;
+}
+
+.lock-icon {
+  font-size: 16px;
+  color: #1f2d3d;
+}
+
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.password-modal {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  width: 400px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header span {
+  cursor: pointer;
+  font-size: 22px;
+}
+
+.modal-sub {
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.password-modal label {
+  display: block;
+  margin-top: 15px;
+}
+
+.password-modal input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  margin-top: 5px;
+}
+
+.update-btn {
+  width: 100%;
+  margin-top: 25px;
+  background: #3f7a78;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+/* ================= STUDENT ANNOUNCEMENTS ================= */
+
+
+.announcements-page {
+  padding: 30px 50px;
+}
+
+.announcements-heading {
+  font-size: 26px;
+  margin-bottom: 25px;
+}
+
+/* Card */
+.student-announcement-card {
+  background: #ffffff;
+  padding: 20px 25px;
+  border-radius: 16px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.student-announcement-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.announcement-title {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.announcement-description {
+  margin: 0 0 12px 0;
+  color: #444;
+  font-size: 15px;
+}
+
+.announcement-time {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #666;
+}
+
+.clock-icon {
+  font-size: 14px;
+}
+/* ================= HACKATHONS ================= */
+
+.hackathon-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+}
+
+.hackathon-card {
+  background: #f3f4f6;
+  padding: 24px;
+  border-radius: 18px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  transition: 0.25s ease;
+  position: relative;
+}
+
+.hackathon-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(0,0,0,0.12);
+}
+
+.hackathon-content h3 {
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.hackathon-company {
+  color: #555;
+  margin-bottom: 14px;
+}
+
+.hackathon-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+  color: #666;
+}
+
+.info-icon {
+  margin-right: 6px;
+  color: #3f7a78;
+}
+
+/* Edit/Delete Icons */
+.hackathon-actions {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  display: flex;
+  gap: 12px;
+  font-size: 15px;
+  color: #666;
+  cursor: pointer;
+}
+
+.hackathon-actions svg:hover {
+  color: #3f7a78;
+}
+
+/* Empty State */
+.empty-hackathons {
+  text-align: center;
+  margin-top: 120px;
+  color: #7b8a93;
+}
+
+.empty-hackathons svg {
+  font-size: 50px;
+  margin-bottom: 15px;
+  opacity: 0.5;
+}
+
+/* Modal */
+.announcement-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.announcement-modal {
+  background: #ffffff;
+  width: 450px;
+  padding: 30px;
+  border-radius: 14px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.announcement-modal input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #dcdcdc;
+  margin-bottom: 15px;
+}
+
+.publish-btn {
+  width: 100%;
+  padding: 12px;
+  background: #3f7a78;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.publish-btn:hover {
+  background: #2f6f65;
+}
+/* ================= STUDENT HACKATHONS ================= */
+
+.student-hackathons-page {
+  padding: 30px;
+}
+
+.student-hackathon-heading {
+  font-size: 26px;
+  margin-bottom: 25px;
+}
+
+/* Card */
+.student-hackathon-card {
+  background: #f3f4f6;
+  padding: 24px;
+  border-radius: 14px;
+  width: 480px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+  position: relative;
+  transition: 0.25s ease;
+}
+
+.student-hackathon-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+}
+
+.student-hackathon-card h3 {
+  margin-bottom: 6px;
+}
+
+.company-name {
+  color: #666;
+  margin-bottom: 12px;
+}
+
+/* Info rows */
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.info-icon {
+  color: #3f7a78;
+  font-size: 14px;
+}
+
+/* Top right icon */
+.top-link-icon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: #3f7a78;
+  font-size: 16px;
+}
+
+.top-link-icon:hover {
+  opacity: 0.8;
+}
+
+/* Register link */
+.register-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  color: #3f7a78;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.register-link:hover {
+  text-decoration: underline;
 }
