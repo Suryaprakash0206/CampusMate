@@ -4,6 +4,10 @@ import profileIcon from "../assets/profile.png";
 import permissionsIcon from "../assets/permissions.png";
 import timetableIcon from "../assets/timetable.png";
 import meetingsIcon from "../assets/meetings.png";
+import announcementIcon from "../assets/announcements.png";
+import hackathonIcon from "../assets/hackathons.png";
+
+
 
 export default function FacultySidebar() {
   const navigate = useNavigate();
@@ -21,6 +25,22 @@ export default function FacultySidebar() {
         <img src={profileIcon} className="sidebar-icon" alt="" />
         <span>Profile</span>
       </div>
+      <div
+        className={`sidebar-item ${isActive("announcements") ? "active" : ""}`}
+        onClick={() => navigate("/dashboard/faculty/announcements")}
+      >
+        <img src={announcementIcon} className="sidebar-icon" alt="" />
+        <span>Announcements</span>
+      </div>
+
+      <div
+        className={`sidebar-item ${isActive("hackathons") ? "active" : ""}`}
+        onClick={() => navigate("/dashboard/faculty/hackathons")}
+      >
+        <img src={hackathonIcon} className="sidebar-icon" alt="" />
+        <span>Hackathons</span>
+      </div>
+
 
       <div
         className={`sidebar-item ${isActive("permissions") ? "active" : ""}`}
