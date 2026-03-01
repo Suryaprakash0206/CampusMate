@@ -2,8 +2,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 import profileIcon from "../assets/profile.png";
 import permissionsIcon from "../assets/permissions.png";
-import timetableIcon from "../assets/timetable.png";
-import meetingsIcon from "../assets/meetings.png";
+import drivesIcon from "../assets/drives.png";
+import examsIcon from "../assets/exams.png";
 import announcementIcon from "../assets/announcements.png";
 import hackathonIcon from "../assets/hackathons.png";
 
@@ -41,6 +41,21 @@ export default function FacultySidebar() {
         <span>Hackathons</span>
       </div>
 
+      <div
+        className={`sidebar-item ${isActive("drives") ? "active" : ""}`}
+        onClick={() => navigate("/dashboard/faculty/drives")}
+      >
+        <img src={drivesIcon} className="sidebar-icon" alt="" />
+        <span>Drives</span>
+      </div>
+
+      <div
+        className={`sidebar-item ${isActive("exams") ? "active" : ""}`}
+        onClick={() => navigate("/dashboard/faculty/exams")}
+      >
+        <img src={examsIcon} className="sidebar-icon" alt="" />
+        <span>Exams</span>
+      </div>
 
       <div
         className={`sidebar-item ${isActive("permissions") ? "active" : ""}`}
@@ -48,22 +63,6 @@ export default function FacultySidebar() {
       >
         <img src={permissionsIcon} className="sidebar-icon" alt="" />
         <span>Permissions</span>
-      </div>
-
-      <div
-        className={`sidebar-item ${isActive("timetable") ? "active" : ""}`}
-        onClick={() => navigate("/dashboard/faculty/timetable")}
-      >
-        <img src={timetableIcon} className="sidebar-icon" alt="" />
-        <span>Timetable</span>
-      </div>
-
-      <div
-        className={`sidebar-item ${isActive("meetings") ? "active" : ""}`}
-        onClick={() => navigate("/dashboard/faculty/meetings")}
-      >
-        <img src={meetingsIcon} className="sidebar-icon" alt="" />
-        <span>Meetings</span>
       </div>
 
       <div className="logout-section">
