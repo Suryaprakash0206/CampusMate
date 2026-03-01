@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   FaPlus,
   FaTimes,
@@ -22,21 +22,37 @@ export default function FacultyExams() {
     type: "Quiz"
   });
 
-  const handlePublish = () => {
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/faculty/exams")
+      .then((res) => res.json())
+      .then((data) => setExams(data))
+      .catch((err) => console.error("Error fetching exams:", err));
+  }, []);
+
+  const handlePublish = async () => {
     if (!formData.subject || !formData.date) return;
 
     if (editingId) {
-      setExams(
-        exams.map((item) =>
-          item.id === editingId ? { ...item, ...formData } : item
-        )
-      );
+      // Optional update endpoint logic can be added here
+      console.log("Update not implemented");
     } else {
-      const newExam = {
-        id: Date.now(),
-        ...formData
-      };
-      setExams([newExam, ...exams]);
+      try {
+        const response = await fetch("http://localhost:5000/api/faculty/exams", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData)
+        });
+        const data = await response.json();
+
+        if (response.ok) {
+          setExams([...exams, data.exam].sort((a, b) => new Date(a.date) - new Date(b.date)));
+        } else {
+          alert("Error publishing exam");
+        }
+      } catch (err) {
+        console.error("Publish error:", err);
+      }
     }
 
     setFormData({
@@ -46,18 +62,34 @@ export default function FacultyExams() {
       venue: "",
       type: "Quiz"
     });
-
     setEditingId(null);
     setShowModal(false);
   };
 
-  const handleDelete = (id) => {
-    setExams(exams.filter((item) => item.id !== id));
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/faculty/exams/${id}`, {
+        method: "DELETE"
+      });
+      if (response.ok) {
+        setExams(exams.filter((item) => item._id !== id));
+      } else {
+        alert("Error deleting exam");
+      }
+    } catch (err) {
+      console.error("Delete error:", err);
+    }
   };
 
   const handleEdit = (item) => {
-    setFormData(item);
-    setEditingId(item.id);
+    setFormData({
+      subject: item.subject,
+      date: item.date,
+      time: item.time,
+      venue: item.venue,
+      type: item.type
+    });
+    setEditingId(item._id);
     setShowModal(true);
   };
 
@@ -81,50 +113,50 @@ export default function FacultyExams() {
 
       {/* Exam Cards */}
 
-{/* Exams List */}
-{exams.length === 0 ? (
-  <div className="exams-empty">
-    <FaCalendarAlt />
-    <h3>No exams yet</h3>
-    <p>Click "Add Exam" to create one.</p>
-  </div>
-) : (
-  <div className="exams-grid">
-    {exams.map((item) => (
-      <div key={item.id} className="exam-card">
-        <div className="exam-content">
-          <h3>{item.subject}</h3>
-
-          <span className="exam-type">
-            {item.type}
-          </span>
-
-          <div className="exam-info">
-            <div>
-              <FaCalendarAlt className="exam-icon" />
-              {item.date}
-            </div>
-
-            <div>
-              <FaClock className="exam-icon" />
-              {item.time}
-            </div>
-
-            <div>
-              <FaMapMarkerAlt className="exam-icon" />
-              {item.venue}
-            </div>
-          </div>
+      {/* Exams List */}
+      {exams.length === 0 ? (
+        <div className="exams-empty">
+          <FaCalendarAlt />
+          <h3>No exams yet</h3>
+          <p>Click "Add Exam" to create one.</p>
         </div>
+      ) : (
+        <div className="exams-grid">
+          {exams.map((item) => (
+            <div key={item._id || item.id} className="exam-card">
+              <div className="exam-content">
+                <h3>{item.subject}</h3>
 
-        <div className="exam-actions">
-          <FaEdit onClick={() => handleEdit(item)} />
-          <FaTrash onClick={() => handleDelete(item.id)} />
+                <span className="exam-type">
+                  {item.type}
+                </span>
+
+                <div className="exam-info">
+                  <div>
+                    <FaCalendarAlt className="exam-icon" />
+                    {item.date}
+                  </div>
+
+                  <div>
+                    <FaClock className="exam-icon" />
+                    {item.time}
+                  </div>
+
+                  <div>
+                    <FaMapMarkerAlt className="exam-icon" />
+                    {item.venue}
+                  </div>
+                </div>
+              </div>
+
+              <div className="exam-actions">
+                <FaEdit onClick={() => handleEdit(item)} />
+                <FaTrash onClick={() => handleDelete(item._id || item.id)} />
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
-    ))}
-  </div>
-)}
+      )}
 
       {/* Modal */}
       {showModal && (
