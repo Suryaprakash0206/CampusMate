@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   FaClock,
   FaCheckCircle,
@@ -10,29 +10,28 @@ import {
 
 export default function StudentPermissions() {
 
-  const [requests, setRequests] = useState([
-    {
-      id: 1,
-      rollNumber:"24B11CS001",
-      title: "Outpass Request",
-      reason: "Need to attend my cousin's wedding function.",
-      fromDate: "2026-03-05",
-      toDate: "2026-03-07",
-      status: "Pending",
-      submitted: "2026-03-01"
-    }
-  ]);
-
+  const [requests, setRequests] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState(null);
 
   const [formData, setFormData] = useState({
-    rollNumber: "",
     title: "",
     fromDate: "",
     toDate: "",
     reason: ""
   });
+
+  const studentId = localStorage.getItem("studentId"); // retrieve logged in studentId
+
+  // Fetch student permissions on mount
+  useEffect(() => {
+    if (studentId) {
+      fetch(`http://localhost:5000/api/student/permissions/${studentId}`)
+        .then(res => res.json())
+        .then(data => setRequests(data))
+        .catch(err => console.error(err));
+    }
+  }, [studentId]);
 
   const handleChange = (e) => {
     setFormData({
@@ -41,41 +40,57 @@ export default function StudentPermissions() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (editingId) {
-      // UPDATE
-      setRequests(
-        requests.map((item) =>
-          item.id === editingId
-            ? { ...item, ...formData }
-            : item
-        )
-      );
-    } else {
-      // ADD
-      const newRequest = {
-        id: Date.now(),
-        ...formData,
-        status: "Pending",
-        submitted: new Date().toISOString().split("T")[0]
-      };
+    try {
+      if (editingId) {
+        // UPDATE (optional extension, skipped here for simplicity but UI supports it)
+        setRequests(
+          requests.map((item) =>
+            item._id === editingId
+              ? { ...item, ...formData }
+              : item
+          )
+        );
+      } else {
+        // ADD
+        if (!studentId) {
+          alert("Student ID missing. Please log in again.");
+          return;
+        }
+        console.log("Submitting Permission:", { ...formData, studentId });
+        const response = await fetch("http://localhost:5000/api/student/permissions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...formData, studentId })
+        });
+        const data = await response.json();
 
-      setRequests([newRequest, ...requests]);
+        if (response.ok) {
+          setRequests([data.permission, ...requests]);
+          alert("Permission requested successfully!");
+        } else {
+          console.error("Backend Error Response:", data);
+          alert(`Error adding permission: ${data.message || data.error || 'Unknown error'}`);
+          return; // Stop execution on error
+        }
+      }
+
+      // Reset
+      setFormData({
+        title: "",
+        fromDate: "",
+        toDate: "",
+        reason: ""
+      });
+
+      setEditingId(null);
+      setShowModal(false);
+    } catch (err) {
+      console.error("Submit Exception:", err);
+      alert("Network error: Could not submit request.");
     }
-
-    // Reset
-    setFormData({
-      rollNumber: "",
-      title: "",
-      fromDate: "",
-      toDate: "",
-      reason: ""
-    });
-
-    setEditingId(null);
-    setShowModal(false);
   };
 
   const handleEdit = (item) => {
@@ -86,12 +101,13 @@ export default function StudentPermissions() {
       reason: item.reason
     });
 
-    setEditingId(item.id);
+    setEditingId(item._id); // use _id from mongodb
     setShowModal(true);
   };
 
   const handleDelete = (id) => {
-    setRequests(requests.filter((item) => item.id !== id));
+    // optional delete endpoint, removing from UI for now
+    setRequests(requests.filter((item) => item._id !== id));
   };
 
   const pending = requests.filter(r => r.status === "Pending").length;
@@ -151,36 +167,36 @@ export default function StudentPermissions() {
         <h3>Your Requests</h3>
 
         {requests.map((item) => (
-          <div key={item.id} className="request-card">
+          <div key={item._id || item.id} className="request-card">
 
             <div className="request-header">
 
-      <div className="request-title-row">
-        <h4>{item.title}</h4>
+              <div className="request-title-row">
+                <h4>{item.title}</h4>
 
-        <span className={`status-badge ${item.status.toLowerCase()}`}>
-          {item.status}
-        </span>
-      </div>
+                <span className={`status-badge ${item.status.toLowerCase()}`}>
+                  {item.status}
+                </span>
+              </div>
 
-      {item.status === "Pending" && (
-      <div className="request-actions">
-        <FaEdit
-          className="edit-icon"
-          onClick={() => handleEdit(item)}
-        />
+              {item.status === "Pending" && (
+                <div className="request-actions">
+                  <FaEdit
+                    className="edit-icon"
+                    onClick={() => handleEdit(item)}
+                  />
 
-        <FaTrash
-          className="delete-icon"
-          onClick={() => handleDelete(item.id)}
-        />
-      </div>
-    )}
+                  <FaTrash
+                    className="delete-icon"
+                    onClick={() => handleDelete(item.id)}
+                  />
+                </div>
+              )}
 
-</div>
+            </div>
 
 
-            <p><strong>Roll No:</strong> {item.rollNumber}</p>
+            <p><strong>Roll No:</strong> {item.studentId || item.rollNumber}</p>
             <p><strong>From:</strong> {item.fromDate}</p>
             <p><strong>To:</strong> {item.toDate}</p>
 
@@ -229,9 +245,9 @@ export default function StudentPermissions() {
                 <input
                   type="text"
                   name="rollNumber"
-                  value={formData.rollNumber}
-                  onChange={handleChange}
-                  required
+                  value={studentId || "Logging Required"}
+                  disabled
+                  title="Your roll number is auto-filled."
                 />
               </div>
 
