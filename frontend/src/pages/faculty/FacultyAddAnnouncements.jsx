@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaTrash, FaEdit, FaClock, FaTimes, FaPlus, FaBullhorn } from "react-icons/fa";
 
 export default function FacultyAnnouncements() {
@@ -11,24 +11,41 @@ export default function FacultyAnnouncements() {
     description: "",
   });
 
-  const handlePublish = () => {
+  useEffect(() => {
+    fetch("http://localhost:5000/api/faculty/announcements")
+      .then(res => res.json())
+      .then(data => setAnnouncements(data))
+      .catch(err => console.error("Error fetching Announcements:", err));
+  }, []);
+
+  const handlePublish = async () => {
     if (!formData.title || !formData.description) return;
 
     if (editingId) {
       setAnnouncements(
         announcements.map((item) =>
-          item.id === editingId
+          item._id === editingId
             ? { ...item, ...formData }
             : item
         )
       );
     } else {
-      const newAnnouncement = {
-        id: Date.now(),
-        ...formData,
-        time: new Date().toLocaleString(),
-      };
-      setAnnouncements([newAnnouncement, ...announcements]);
+      try {
+        const response = await fetch("http://localhost:5000/api/faculty/announcement", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: formData.title,
+            description: formData.description,
+            facultyId: "FAC001",
+            facultyName: "Faculty"
+          })
+        });
+        const data = await response.json();
+        setAnnouncements([data, ...announcements]);
+      } catch (err) {
+        console.error("Error adding announcement:", err);
+      }
     }
 
     setFormData({ title: "", description: "" });
@@ -36,8 +53,13 @@ export default function FacultyAnnouncements() {
     setShowModal(false);
   };
 
-  const handleDelete = (id) => {
-    setAnnouncements(announcements.filter((item) => item.id !== id));
+  const handleDelete = async (id) => {
+    try {
+      await fetch(`http://localhost:5000/api/faculty/announcement/${id}`, { method: "DELETE" });
+      setAnnouncements(announcements.filter((item) => item._id !== id));
+    } catch (err) {
+      console.error("Error deleting announcement:", err);
+    }
   };
 
   const handleEdit = (item) => {
@@ -45,7 +67,7 @@ export default function FacultyAnnouncements() {
       title: item.title,
       description: item.description,
     });
-    setEditingId(item.id);
+    setEditingId(item._id);
     setShowModal(true);
   };
 
@@ -68,36 +90,36 @@ export default function FacultyAnnouncements() {
 
       {/* Announcement List */}
       {announcements.length === 0 ? (
-      <div className="empty-announcements">
-        <FaBullhorn />
-        <h3>No announcements yet</h3>
-        <p>Click "Add Announcement" to create one.</p>
-      </div>
-      ) : (
-      announcements.map((item) => (
-      <div key={item.id} className="faculty-announcement-card">
-      <div className="announcement-content">
-        <h3>{item.title}</h3>
-        <p>{item.description}</p>
-
-        <div className="announcement-time">
-          <FaClock /> {item.time}
+        <div className="empty-announcements">
+          <FaBullhorn />
+          <h3>No announcements yet</h3>
+          <p>Click "Add Announcement" to create one.</p>
         </div>
-      </div>
+      ) : (
+        announcements.map((item) => (
+          <div key={item._id} className="faculty-announcement-card">
+            <div className="announcement-content">
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
 
-      <div className="announcement-actions">
-        <FaEdit
-          className="edit-icon"
-          onClick={() => handleEdit(item)}
-        />
-        <FaTrash
-          className="delete-icon"
-          onClick={() => handleDelete(item.id)}
-        />
-      </div>
-    </div>
-  ))
-)}
+              <div className="announcement-time">
+                <FaClock /> {item.createdAt ? new Date(item.createdAt).toLocaleString() : new Date().toLocaleString()}
+              </div>
+            </div>
+
+            <div className="announcement-actions">
+              <FaEdit
+                className="edit-icon"
+                onClick={() => handleEdit(item)}
+              />
+              <FaTrash
+                className="delete-icon"
+                onClick={() => handleDelete(item._id)}
+              />
+            </div>
+          </div>
+        ))
+      )}
 
 
       {/* Modal */}
