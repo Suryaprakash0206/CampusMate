@@ -5,6 +5,7 @@ import announcementsIcon from "../assets/announcements.png";
 import examsIcon from "../assets/exams.png";
 import hackathonsIcon from "../assets/hackathons.png";
 import drivesIcon from "../assets/drives.png";
+import permissionsIcon from "../assets/permissions.png";
 
 export default function StudentSidebar() {
   const navigate = useNavigate();
@@ -54,6 +55,14 @@ export default function StudentSidebar() {
       >
         <img src={drivesIcon} className="sidebar-icon" alt="" />
         <span>Drives</span>
+      </div>
+      
+      <div
+        className={`sidebar-item ${isActive("permissions") ? "active" : ""}`}
+        onClick={() => navigate("/dashboard/student/permissions")}
+      >
+        <img src={permissionsIcon} className="sidebar-icon" alt="" />
+        <span>Permissions</span>
       </div>
 
       {/* Logout */}
