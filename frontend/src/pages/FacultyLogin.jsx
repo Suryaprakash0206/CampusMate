@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function FacultyLogin() {
   const navigate = useNavigate();
+  const passwordRef = useRef(null);
+
   const [facultyId, setFacultyId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const handleLogin = async () => {
-    setError(""); 
+    setError("");
 
     if (!facultyId || !password) {
       setError("Please fill in all fields");
@@ -26,7 +28,7 @@ export default function FacultyLogin() {
 
       if (response.ok) {
         localStorage.setItem("token", data.token);
-        localStorage.setItem("role", "faculty"); // Optional: track user type
+        localStorage.setItem("role", "faculty");
         navigate("/dashboard/faculty");
       } else {
         setError(data.message || "Login failed");
@@ -39,24 +41,51 @@ export default function FacultyLogin() {
 
   return (
     <div className="login" style={{ padding: "20px", textAlign: "center" }}>
-      <div className="box" style={{ border: "1px solid #ccc", display: "inline-block", padding: "20px" }}>
+      <div
+        className="box"
+        style={{
+          border: "1px solid #ccc",
+          display: "inline-block",
+          padding: "20px",
+        }}
+      >
         <h2>Faculty Login</h2>
+
+        {/* Faculty ID */}
         <div style={{ marginBottom: "10px" }}>
           <input
             placeholder="Faculty ID"
             value={facultyId}
             onChange={(e) => setFacultyId(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                passwordRef.current.focus();
+              }
+            }}
           />
         </div>
+
+        {/* Password */}
         <div style={{ marginBottom: "10px" }}>
           <input
             type="password"
             placeholder="Password"
             value={password}
+            ref={passwordRef}
             onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleLogin();
+              }
+            }}
           />
         </div>
-        {error && <p style={{ color: "red", fontSize: "14px" }}>{error}</p>}
+
+        {error && (
+          <p style={{ color: "red", fontSize: "14px" }}>{error}</p>
+        )}
+
         <button onClick={handleLogin}>Login</button>
       </div>
     </div>

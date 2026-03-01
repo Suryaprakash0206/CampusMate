@@ -15,13 +15,14 @@ import StudentProfile from "./pages/student/StudentProfile";
 import Exams from "./pages/student/Exams";
 import Hackathons from "./pages/student/Hackathons";
 import Drives from "./pages/student/Drives";
+import StudentPermissions from "./pages/student/StudentPermissions";
 
 // Faculty pages
 import FacultyHome from "./pages/faculty/FacultyHome";
 import FacultyProfile from "./pages/faculty/FacultyProfile";
 import Permissions from "./pages/faculty/Permissions";
-import Timetable from "./pages/faculty/Timetable";
-import Meetings from "./pages/faculty/Meetings";
+import FacultyDrives from "./pages/faculty/FacultyDrives";
+import FacultyExams from "./pages/faculty/FacultyExams";
 import FacultyAnnouncements from "./pages/faculty/FacultyAnnouncements";
 import FacultyHackathons from "./pages/faculty/FacultyHackathons";
 
@@ -39,6 +40,7 @@ function App() {
         <Route index element={<StudentHome />} />
         <Route path="profile" element={<StudentProfile />} />
         <Route path="announcements" element={<Announcements />} />
+        <Route path="permissions" element={<StudentPermissions />} />
         <Route path="exams" element={<Exams />} />
         <Route path="hackathons" element={<Hackathons />} />
         <Route path="drives" element={<Drives />} />
@@ -51,10 +53,10 @@ function App() {
         <Route index element={<FacultyHome />} />
         <Route path="profile" element={<FacultyProfile />} />
         <Route path="announcements" element={<FacultyAnnouncements />} />
-        <Route path="hackathons" element={<FacultyHackathons />} />
         <Route path="permissions" element={<Permissions />} />
-        <Route path="timetable" element={<Timetable />} />
-        <Route path="meetings" element={<Meetings />} />
+        <Route path="hackathons" element={<FacultyHackathons />} />
+        <Route path="drives" element={<FacultyDrives />} />
+        <Route path="exams" element={<FacultyExams />} />
       </Route>
     </Routes>
   );
