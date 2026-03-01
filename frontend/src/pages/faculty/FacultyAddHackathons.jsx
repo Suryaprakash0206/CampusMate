@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   FaTrash,
   FaEdit,
@@ -23,23 +23,41 @@ export default function FacultyHackathons() {
     link: ""
   });
 
-  const handlePublish = () => {
+  useEffect(() => {
+    fetch("http://localhost:5000/api/faculty/hackathons")
+      .then(res => res.json())
+      .then(data => setHackathons(data))
+      .catch(err => console.error("Error fetching hackathons:", err));
+  }, []);
+
+  const handlePublish = async () => {
     if (!formData.title || !formData.company) return;
 
     if (editingId) {
       setHackathons(
         hackathons.map((item) =>
-          item.id === editingId ? { ...item, ...formData } : item
+          item._id === editingId ? { ...item, ...formData } : item
         )
       );
     } else {
-      const newHackathon = {
-        id: Date.now(),
-        ...formData,
-        createdAt: new Date().toLocaleString()
-      };
-
-      setHackathons([newHackathon, ...hackathons]);
+      try {
+        const response = await fetch("http://localhost:5000/api/faculty/add-hackathon", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: formData.title,
+            companyName: formData.company,
+            place: formData.place,
+            deadline: formData.deadline,
+            registrationLink: formData.link,
+            facultyName: "Faculty"
+          })
+        });
+        const data = await response.json();
+        setHackathons([data.hackathon, ...hackathons]);
+      } catch (err) {
+        console.error("Error adding hackathon:", err);
+      }
     }
 
     setFormData({
@@ -54,22 +72,28 @@ export default function FacultyHackathons() {
     setShowModal(false);
   };
 
-  const handleDelete = (id) => {
-    setHackathons(hackathons.filter((item) => item.id !== id));
+  const handleDelete = async (id) => {
+    try {
+      await fetch(`http://localhost:5000/api/faculty/hackathon/${id}`, { method: "DELETE" });
+      setHackathons(hackathons.filter((item) => item._id !== id));
+    } catch (err) {
+      console.error("Error deleting hackathon:", err);
+    }
   };
 
   const handleEdit = (item) => {
     setFormData({
       title: item.title,
-      company: item.company,
+      company: item.companyName || item.company,
       place: item.place,
       deadline: item.deadline,
-      link: item.link
+      link: item.registrationLink || item.link
     });
 
-    setEditingId(item.id);
+    setEditingId(item._id);
     setShowModal(true);
   };
+
 
   return (
     <div className="faculty-announcements">
@@ -105,10 +129,10 @@ export default function FacultyHackathons() {
       ) : (
         <div className="hackathon-grid">
           {hackathons.map((item) => (
-            <div key={item.id} className="hackathon-card">
+            <div key={item._id} className="hackathon-card">
               <div className="hackathon-content">
                 <h3>{item.title}</h3>
-                <p className="hackathon-company">{item.company}</p>
+                <p className="hackathon-company">{item.companyName || item.company}</p>
 
                 <div className="hackathon-info">
                   <div>
@@ -123,15 +147,15 @@ export default function FacultyHackathons() {
 
                   <div>
                     <FaClock className="info-icon" />
-                    {item.createdAt}
+                    {item.createdAt ? new Date(item.createdAt).toLocaleString() : ""}
                   </div>
                 </div>
               </div>
 
               <div className="hackathon-actions">
-                {item.link && (
+                {(item.registrationLink || item.link) && (
                   <a
-                    href={item.link}
+                    href={item.registrationLink || item.link}
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -140,7 +164,7 @@ export default function FacultyHackathons() {
                 )}
 
                 <FaEdit onClick={() => handleEdit(item)} />
-                <FaTrash onClick={() => handleDelete(item.id)} />
+                <FaTrash onClick={() => handleDelete(item._id)} />
               </div>
             </div>
           ))}
