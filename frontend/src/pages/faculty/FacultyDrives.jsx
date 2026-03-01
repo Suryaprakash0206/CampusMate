@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   FaTrash,
   FaEdit,
@@ -26,46 +26,86 @@ export default function FacultyDrives() {
     status: "Upcoming"
   });
 
-  const handlePublish = () => {
-    if (!formData.company || !formData.role) return;
+  useEffect(() => {
+    fetchDrives();
+  }, []);
 
-    if (editingId) {
-      setDrives(
-        drives.map((item) =>
-          item.id === editingId ? { ...item, ...formData } : item
-        )
-      );
-    } else {
-      const newDrive = {
-        id: Date.now(),
-        ...formData,
-        createdAt: new Date().toLocaleString()
-      };
-
-      setDrives([newDrive, ...drives]);
+  const fetchDrives = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/faculty/drives");
+      if (response.ok) {
+        const data = await response.json();
+        setDrives(data);
+      }
+    } catch (error) {
+      console.error("Error fetching drives:", error);
     }
-
-    setFormData({
-      company: "",
-      role: "",
-      date: "",
-      venue: "",
-      eligibility: "",
-      link: "",
-      status: "Upcoming"
-    });
-
-    setEditingId(null);
-    setShowModal(false);
   };
 
-  const handleDelete = (id) => {
-    setDrives(drives.filter((item) => item.id !== id));
+  const handlePublish = async () => {
+    if (!formData.company || !formData.role || !formData.date || !formData.venue || !formData.eligibility) {
+      alert("Please fill in all required fields (Company, Role, Date, Venue, Eligibility).");
+      return;
+    }
+
+    try {
+      if (editingId) {
+        const response = await fetch(`http://localhost:5000/api/faculty/drives/${editingId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData)
+        });
+        if (response.ok) {
+          fetchDrives();
+        } else {
+          alert("Failed to update drive. Please try again.");
+        }
+      } else {
+        const response = await fetch("http://localhost:5000/api/faculty/add-drive", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData)
+        });
+        if (response.ok) {
+          fetchDrives();
+        } else {
+          alert("Failed to add drive. Ensure the backend server is running.");
+        }
+      }
+
+      setFormData({
+        company: "",
+        role: "",
+        date: "",
+        venue: "",
+        eligibility: "",
+        link: "",
+        status: "Upcoming"
+      });
+
+      setEditingId(null);
+      setShowModal(false);
+    } catch (error) {
+      console.error("Error saving drive:", error);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/faculty/drives/${id}`, {
+        method: "DELETE"
+      });
+      if (response.ok) {
+        setDrives(drives.filter((item) => item._id !== id));
+      }
+    } catch (error) {
+      console.error("Error deleting drive:", error);
+    }
   };
 
   const handleEdit = (item) => {
     setFormData(item);
-    setEditingId(item.id);
+    setEditingId(item._id);
     setShowModal(true);
   };
 
@@ -105,69 +145,69 @@ export default function FacultyDrives() {
       ) : (
         <div className="drives-grid">
           {drives.map((item) => (
-        <div key={item.id} className="drive-card">
+            <div key={item._id} className="drive-card">
 
-        {/* Card Content */}
-        <div className="drive-content">
-        <h3>{item.company}</h3>
-        <p className="drive-role">{item.role}</p>
+              {/* Card Content */}
+              <div className="drive-content">
+                <h3>{item.company}</h3>
+                <p className="drive-role">{item.role}</p>
 
-        <div className="drive-info">
+                <div className="drive-info">
 
-        <div className="drive-row">
-          <span className="drive-value">
-            <FaCalendarAlt className="drive-icon" />
-            <span className="drive-label">Deadline: </span>
-            {item.date}
-          </span>
-        </div>
+                  <div className="drive-row">
+                    <span className="drive-value">
+                      <FaCalendarAlt className="drive-icon" />
+                      <span className="drive-label">Deadline: </span>
+                      {item.date}
+                    </span>
+                  </div>
 
-        <div className="drive-row">
-          <span className="drive-value">
-            <FaMapMarkerAlt className="drive-icon" />
-            <span className="drive-label">Venue: </span>
-            {item.venue}
-          </span>
-        </div>
+                  <div className="drive-row">
+                    <span className="drive-value">
+                      <FaMapMarkerAlt className="drive-icon" />
+                      <span className="drive-label">Venue: </span>
+                      {item.venue}
+                    </span>
+                  </div>
 
-        <div className="drive-row">
-          <span className="drive-value">
-            <FaUserGraduate className="drive-icon" />
-            <span className="drive-label">Eligibility: </span>
-            {item.eligibility}
-          </span>
-        </div>
+                  <div className="drive-row">
+                    <span className="drive-value">
+                      <FaUserGraduate className="drive-icon" />
+                      <span className="drive-label">Eligibility: </span>
+                      {item.eligibility}
+                    </span>
+                  </div>
 
-      <div className="drive-row">
-        <span className="drive-label">Created: </span>
-        <span className="drive-value">
-          {item.createdAt}
-        </span>
-      </div>
+                  <div className="drive-row">
+                    <span className="drive-label">Created: </span>
+                    <span className="drive-value">
+                      {item.createdAt ? new Date(item.createdAt).toLocaleDateString() : 'N/A'}
+                    </span>
+                  </div>
 
-    </div>
-  </div>
+                </div>
+              </div>
 
-  {/* Top Right Icons */}
-  <div className="drive-actions">
+              {/* Top Right Icons */}
+              <div className="drive-actions">
 
-    {item.link && (
-      <a
-        href={item.link}
-        target="_blank"
-        rel="noreferrer"
-        className="drive-link-icon"
-      >
-        <FaExternalLinkAlt />
-      </a>
-    )}
+                {item.link && (
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="drive-link-icon"
+                  >
+                    <FaExternalLinkAlt />
+                  </a>
+                )}
 
-    <FaEdit onClick={() => handleEdit(item)} />
-    <FaTrash onClick={() => handleDelete(item.id)} />
+                <FaEdit onClick={() => handleEdit(item)} />
+                <FaTrash onClick={() => handleDelete(item._id)} />
 
-  </div>
+              </div>
 
-</div>
+            </div>
           ))}
         </div>
       )}
@@ -236,17 +276,6 @@ export default function FacultyDrives() {
                 setFormData({ ...formData, link: e.target.value })
               }
             />
-
-            {/* <label>Status</label>
-            <select
-              value={formData.status}
-              onChange={(e) =>
-                setFormData({ ...formData, status: e.target.value })
-              }
-            >
-              <option>Upcoming</option>
-              <option>Completed</option>
-            </select> */}
 
             <button className="drive-publish-btn" onClick={handlePublish}>
               {editingId ? "Update Drive" : "Add Drive"}
