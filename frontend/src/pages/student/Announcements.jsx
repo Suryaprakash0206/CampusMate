@@ -1,22 +1,22 @@
+import { useState, useEffect } from "react";
 import { FiClock } from "react-icons/fi";
 
 export default function Announcements() {
-  const announcements = [
-    {
-      id: 1,
-      title: "Mid-Term Schedule",
-      description:
-        "Mid term schedule is released. So start preparing for your exams. All The Best.",
-      date: "2/20/2026, 9:44:54 PM",
-    },
-  ];
+  const [announcements, setAnnouncements] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/faculty/announcements")
+      .then((res) => res.json())
+      .then((data) => setAnnouncements(data))
+      .catch((err) => console.error("Error fetching announcements:", err));
+  }, []);
 
   return (
     <div className="announcements-page">
       <h2 className="announcements-heading">Announcements</h2>
 
       {announcements.map((item) => (
-        <div key={item.id} className="student-announcement-card">
+        <div key={item._id} className="student-announcement-card">
           <h3 className="announcement-title">{item.title}</h3>
 
           <p className="announcement-description">
@@ -25,7 +25,7 @@ export default function Announcements() {
 
           <div className="announcement-time">
             <FiClock className="clock-icon" />
-            <span>{item.date}</span>
+            <span>{item.createdAt ? new Date(item.createdAt).toLocaleString() : ""}</span>
           </div>
         </div>
       ))}
