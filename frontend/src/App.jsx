@@ -23,8 +23,8 @@ import FacultyProfile from "./pages/faculty/FacultyProfile";
 import Permissions from "./pages/faculty/Permissions";
 import FacultyDrives from "./pages/faculty/FacultyDrives";
 import FacultyExams from "./pages/faculty/FacultyExams";
-import FacultyAnnouncements from "./pages/faculty/FacultyAnnouncements";
-import FacultyHackathons from "./pages/faculty/FacultyHackathons";
+import FacultyAnnouncements from "./pages/faculty/FacultyAddAnnouncements";
+import FacultyHackathons from "./pages/faculty/FacultyAddHackathons";
 
 
 function App() {
