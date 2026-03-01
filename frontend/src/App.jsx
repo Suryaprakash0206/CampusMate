@@ -22,9 +22,6 @@ import FacultyProfile from "./pages/faculty/FacultyProfile";
 import Permissions from "./pages/faculty/Permissions";
 import Timetable from "./pages/faculty/Timetable";
 import Meetings from "./pages/faculty/Meetings";
-import FacultyAnnouncements from "./pages/faculty/FacultyAnnouncements";
-import FacultyHackathons from "./pages/faculty/FacultyHackathons";
-
 
 function App() {
   return (
@@ -50,8 +47,6 @@ function App() {
       <Route path="/dashboard/faculty" element={<FacultyDashboard />}>
         <Route index element={<FacultyHome />} />
         <Route path="profile" element={<FacultyProfile />} />
-        <Route path="announcements" element={<FacultyAnnouncements />} />
-        <Route path="hackathons" element={<FacultyHackathons />} />
         <Route path="permissions" element={<Permissions />} />
         <Route path="timetable" element={<Timetable />} />
         <Route path="meetings" element={<Meetings />} />
