@@ -28,6 +28,7 @@ export default function FacultyLogin() {
 
       if (response.ok) {
         localStorage.setItem("token", data.token);
+        localStorage.setItem("facultyId", data.facultyId);
         localStorage.setItem("role", "faculty");
         navigate("/dashboard/faculty");
       } else {
