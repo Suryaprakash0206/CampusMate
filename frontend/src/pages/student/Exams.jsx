@@ -1,17 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaCalendarAlt, FaClock, FaMapMarkerAlt } from "react-icons/fa";
 
 export default function StudentExams() {
-  const [exams] = useState([
-    {
-      id: 1,
-      subject: "Data Structures",
-      type: "Semester",
-      date: "2026-03-06",
-      time: "03:00",
-      venue: "BGB 310"
-    }
-  ]);
+  const [exams, setExams] = useState([]);
+
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/student/exams")
+      .then(res => res.json())
+      .then(data => setExams(data))
+      .catch(err => console.error(err));
+  }, []);
 
   return (
     <div className="student-exams-page">
@@ -19,7 +18,7 @@ export default function StudentExams() {
 
       <div className="student-exams-grid">
         {exams.map((item) => (
-          <div key={item.id} className="student-exam-card">
+          <div key={item._id || item.id} className="student-exam-card">
 
             <h3>{item.subject}</h3>
 
