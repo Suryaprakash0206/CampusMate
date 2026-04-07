@@ -1,0 +1,101 @@
+import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+export default function StudentLogin() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("token") && localStorage.getItem("role") === "student") {
+      navigate("/dashboard/student", { replace: true });
+    }
+  }, []);
+  const passwordRef = useRef(null);
+
+  const [studentId, setStudentId] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleLogin = async () => {
+    setError("");
+
+    if (!studentId || !password) {
+      setError("Please fill in all fields");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5000/api/student/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ studentId, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("role", "student");
+        localStorage.setItem("studentName", data.studentName);
+        localStorage.setItem("studentId", data.studentId || studentId);
+        navigate("/dashboard/student", { replace: true });
+      } else {
+        setError(data.message || "Login failed");
+      }
+    } catch (err) {
+      console.error("Fetch Error:", err);
+      setError("Cannot connect to server. Is the backend running?");
+    }
+  };
+
+  return (
+    <div className="login" style={{ padding: "20px", textAlign: "center" }}>
+      <div
+        className="box"
+        style={{
+          border: "1px solid #ccc",
+          display: "inline-block",
+          padding: "20px",
+        }}
+      >
+        <h2>Student Login</h2>
+
+        {/* Student ID */}
+        <div style={{ marginBottom: "10px" }}>
+          <input
+            placeholder="Student ID"
+            value={studentId}
+            onChange={(e) => setStudentId(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                passwordRef.current.focus();
+              }
+            }}
+          />
+        </div>
+
+        {/* Password */}
+        <div style={{ marginBottom: "10px" }}>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            ref={passwordRef}
+            onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleLogin();
+              }
+            }}
+          />
+        </div>
+
+        {error && (
+          <p style={{ color: "red", fontSize: "14px" }}>{error}</p>
+        )}
+
+        <button onClick={handleLogin}>Login</button>
+      </div>
+    </div>
+  );
+}
